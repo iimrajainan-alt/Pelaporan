@@ -1,17 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\DosenController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+
+
+Route::resource('mahasiswa', MahasiswaController::class);
+Route::resource('dosen', DosenController::class);
 Route::get('/', function () {
     return "Sistem Pelaporan Masalah - Teknik Informatika";
 });
@@ -19,3 +16,7 @@ Route::get('/', function () {
 Route::get('/halo', function () {
     return "Ini laravel pertama saya";
 });
+Route::resource('laporan', LaporanController::class)->parameters([
+    'laporan' => 'laporan'
+]);
+
