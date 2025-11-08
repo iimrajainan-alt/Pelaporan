@@ -27,17 +27,16 @@ class LaporanController extends Controller
         $validated = $request->validate([
             'judul' => ['required','string','max:150'],
             'deskripsi' => ['required','string','max:2000'],
-            'mahasiswa_id' => ['required','exists:mahasiswas,id'],
         ]);
 
         $nomorLaporan = $this->generateNomorLaporan();
 
-        $laporan = Laporan::create([
+        $laporan = \App\Models\Laporan::create([
             'judul' => $validated['judul'],
             'deskripsi' => $validated['deskripsi'],
             'nomor_laporan' => $nomorLaporan,
             'status' => 'baru',
-            'mahasiswa_id' => $validated['mahasiswa_id'],
+            'mahasiswa_id' => auth()->id(), // otomatis ambil user login
         ]);
 
         return redirect()->route('laporan.show', $laporan)
