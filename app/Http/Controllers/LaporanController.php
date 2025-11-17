@@ -73,6 +73,7 @@ class LaporanController extends Controller
         $laporan->update($validated);
 
         return redirect()->route('laporan.show', $laporan)->with('success','Laporan berhasil diperbarui.');
+        return redirect()->back()->with('success','Status laporan berhasil diperbarui');
     }
 
     public function destroy(Laporan $laporan)

@@ -29,14 +29,16 @@
         <td class="px-4 py-2 border">
           @php
             $color = $laporan->status === 'selesai' ? 'green' : ($laporan->status === 'diproses' ? 'yellow' : 'red');
-            $label = ucfirst($laporan->status);
           @endphp
-          <span class="px-2 py-1 rounded bg-{{ $color }}-100 text-{{ $color }}-800 border border-{{ $color }}-200 text-sm">{{ $label }}</span>
+          <span class="px-2 py-1 rounded bg-{{ $color }}-100 text-{{ $color }}-800 border border-{{ $color }}-200 text-sm">
+            {{ ucfirst($laporan->status) }}
+          </span>        
         </td>
         <td class="px-4 py-2 border">
           <a href="{{ route('laporan.show', $laporan) }}" class="text-blue-700 hover:underline">Lihat</a>
           <a href="{{ route('laporan.edit', $laporan) }}" class="ml-3 text-yellow-600 hover:underline">Edit</a>
-          @can('isDPA')
+          
+          <!-- Tombol Ubah Status Cepat -->
           <form action="{{ route('laporan.update', $laporan) }}" method="POST" class="inline-block ml-3">
             @csrf @method('PUT')
             <input type="hidden" name="judul" value="{{ $laporan->judul }}">
@@ -47,7 +49,12 @@
               {{ $laporan->status === 'baru' ? 'Proses' : ($laporan->status === 'diproses' ? 'Selesaikan' : '') }}
             </button>
           </form>
-        @endcan
+
+          <!-- Hapus -->
+          <form action="{{ route('laporan.destroy', $laporan) }}" method="POST" class="inline-block ml-3" onsubmit="return confirm('Yakin hapus laporan?')">
+            @csrf @method('DELETE')
+            <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+          </form>
         </td>
       </tr>
     @empty
