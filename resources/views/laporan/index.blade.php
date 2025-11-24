@@ -8,7 +8,7 @@
 
 <x-alert-success />
 
-<table class="w-full border-collapse bg-white rounded shadow">
+<table class="w-full border-collapse bg-rounded shadow">
   <thead>
     <tr class="bg-gray-100 text-left">
       <th class="px-4 py-2 border">#</th>
