@@ -27,7 +27,9 @@ class LaporanController extends Controller
         $validated = $request->validate([
             'judul' => ['required','string','max:150'],
             'deskripsi' => ['required','string','max:2000'],
++            'mahasiswa_id' => ['required','exists:mahasiswas,id'],
         ]);
+
 
         $nomorLaporan = $this->generateNomorLaporan();
 
@@ -36,7 +38,8 @@ class LaporanController extends Controller
             'deskripsi' => $validated['deskripsi'],
             'nomor_laporan' => $nomorLaporan,
             'status' => 'baru',
-            'mahasiswa_id' => auth()->id(), // otomatis ambil user login
+-            'mahasiswa_id' => auth()->id(), // otomatis ambil user login
++            'mahasiswa_id' => $validated['mahasiswa_id'],
         ]);
 
         return redirect()->route('laporan.show', $laporan)
@@ -71,9 +74,12 @@ class LaporanController extends Controller
         ]);
 
         $laporan->update($validated);
+            \App\Models\StatusHistory::create([
+        'laporan_id' => $laporan->id,
+        'status' => $validated['status'],
+        ]);      
 
         return redirect()->route('laporan.show', $laporan)->with('success','Laporan berhasil diperbarui.');
-        return redirect()->back()->with('success','Status laporan berhasil diperbarui');
     }
 
     public function destroy(Laporan $laporan)
